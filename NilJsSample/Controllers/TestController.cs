@@ -35,8 +35,7 @@ namespace NilJsSample.Controllers
                 }}
             ";
 
-            // this works, but has to resolve to the dayjs.min.js file
-            // and doesn't line up with how dayjs docs show import via ESM: https://day.js.org/docs/en/installation/typescript
+            // this works, but doesn't line up with how dayjs docs show import via ESM: https://day.js.org/docs/en/installation/typescript
             var workingScript = $@"
                 import 'dayjs';
 
