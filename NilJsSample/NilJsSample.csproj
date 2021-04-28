@@ -4,13 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.113" />
-    <PackageReference Include="NiL.JS" Version="2.5.1493" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(SolutionDir)NilJsSample\lib&quot; &quot;$(TargetDir)\lib&quot; /S /Y" />
+    <Exec Command="XCOPY &quot;$(SolutionDir)NilJsSample\node_modules&quot; &quot;$(TargetDir)node_modules\&quot; /S /Y" />
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NiL.JS\NiL.JS\NiL.JS.csproj" />
+  </ItemGroup>
 
 </Project>

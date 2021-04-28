@@ -33,7 +33,8 @@ namespace NilJsSample.Resolvers
 
         static string GetPath(string moduleName) => moduleName switch
         {
-            "dayjs" => "lib/dayjs/esm/index.js",
+            "dayjs" => "node_modules/dayjs/esm/index.js",
+            "crypto-js" => "node_modules/crypto-js/index.js",
             _ => null
         };
     }
