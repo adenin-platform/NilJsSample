@@ -4,7 +4,7 @@ using NiL.JS;
 using NiL.JS.BaseLibrary;
 using NiL.JS.Core;
 using NiL.JS.Extensions;
-using NilJsSample.Resolvers;
+using NilJsSample.Utils;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace NilJsSample.Controllers
             module
                 .Context
                 .DefineVariable("sandboxImport")
-                .Assign(JSValue.Marshal(new Func<string, Promise>(SandboxImportJS)));
+                .Assign(JSValue.Marshal(new Func<string, Task<JSValue>>(SandboxImporter.CSharpFirst)));
 
             try
             {
@@ -64,28 +64,6 @@ namespace NilJsSample.Controllers
                     error = e.Message
                 });
             }
-        }
-
-        private Promise SandboxImportJS(string moduleName)
-        {
-            var container = $@"
-                import * as {moduleName} from '{moduleName}';
-                async function sandboxImport() {{
-                    return {moduleName};
-                }}
-            ";
-
-            var module = new Module("sandboxImport", container);
-
-            module.ModuleResolversChain.Add(new NamedPackageModuleResolver());
-            module.ModuleResolversChain.Add(new RelativePathModuleResolver());
-
-            module.Run();
-
-            return module.Context.GetVariable("sandboxImport")
-                    .As<Function>()
-                    .Call(new Arguments())
-                    .As<Promise>();
         }
     }
 }

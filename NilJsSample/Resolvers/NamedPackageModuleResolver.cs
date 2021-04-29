@@ -1,4 +1,5 @@
 ﻿using NiL.JS;
+using NilJsSample.Utils;
 using System.IO;
 
 namespace NilJsSample.Resolvers
@@ -8,7 +9,7 @@ namespace NilJsSample.Resolvers
         // this resolver gets the file path from a known, named module
         public override bool TryGetModule(ModuleRequest moduleRequest, out Module result)
         {
-            var modulePath = GetPath(moduleRequest.CmdArgument);
+            var modulePath = ModuleMapper.GetPath(moduleRequest.CmdArgument);
 
             if (modulePath is null)
             {
@@ -30,12 +31,5 @@ namespace NilJsSample.Resolvers
             result = new Module(resolvedPath, code);
             return true;
         }
-
-        static string GetPath(string moduleName) => moduleName switch
-        {
-            "dayjs" => "node_modules/dayjs/esm/index.js",
-            "testmodule" => "wwwroot/lib/index.js",
-            _ => null
-        };
     }
 }
