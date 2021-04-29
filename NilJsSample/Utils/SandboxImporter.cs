@@ -51,19 +51,19 @@ namespace NilJsSample.Utils
             var code = await File.ReadAllTextAsync(resolvedPath);
             var module = new Module(resolvedPath, code);
 
+            module.ModuleResolversChain.Add(new NamedPackageModuleResolver());
+            module.ModuleResolversChain.Add(new RelativePathModuleResolver());
+
             try
             {
-                module.ModuleResolversChain.Add(new NamedPackageModuleResolver());
-                module.ModuleResolversChain.Add(new RelativePathModuleResolver());
-
                 module.Run();
-
-                return module.Exports.CreateExportList();
             }
             catch
             {
                 return JSValue.Undefined;
             }
+
+            return module.Exports.CreateExportList();
         }
     }
 }
