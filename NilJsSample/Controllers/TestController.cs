@@ -23,12 +23,13 @@ namespace NilJsSample.Controllers
         public async Task<IActionResult> Import()
         {
             var script = $@"
-                import dayjs from 'dayjs';
+                import * as say from 'testmodule';
 
                 async function script() {{
                     return JSON.stringify({{
-                        success: true,
-                        time: dayjs().format()
+                        sayHello: say.hello(),
+                        sayBye: say.bye(),
+                        sayDefault: say.default()
                     }});
                 }}
             ";

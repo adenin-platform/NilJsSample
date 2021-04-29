@@ -6,6 +6,7 @@
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="XCOPY &quot;$(SolutionDir)NilJsSample\node_modules&quot; &quot;$(TargetDir)node_modules\&quot; /S /Y" />
+    <Exec Command="XCOPY &quot;$(SolutionDir)NilJsSample\wwwroot&quot; &quot;$(TargetDir)wwwroot\&quot; /S /Y" />
   </Target>
 
   <ItemGroup>

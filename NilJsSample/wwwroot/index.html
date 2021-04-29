@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>NilJs Module Test</title>
+    <meta name="Description" content="adenin" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="x-ua-compatible" content="IE=Edge" />
+    <script type="module">
+        import * as say from './lib/index.js';
+        window.testStatic = () => {
+            console.log(say);
+
+            alert(say.default());
+            alert(say.hello());
+            alert(say.bye());
+        }
+    </script>
+    <script>
+        async function testDynamic() {
+            const sayDynamic = await import('./lib/index.js');
+
+            console.log(sayDynamic);
+
+            alert(sayDynamic.default());
+            alert(sayDynamic.hello());
+            alert(sayDynamic.bye());
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="testStatic()">Test static</button>
+    <button onclick="testDynamic()">Test dynamic</button>
+</body>
+
+</html>
