@@ -10,7 +10,7 @@
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NiL.JS\NiL.JS\NiL.JS.csproj" />
+    <PackageReference Include="NiL.JS" Version="2.5.1493" />
   </ItemGroup>
 
 </Project>

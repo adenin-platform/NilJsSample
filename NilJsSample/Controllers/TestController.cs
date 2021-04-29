@@ -23,9 +23,8 @@ namespace NilJsSample.Controllers
         public async Task<IActionResult> Import()
         {
             var script = $@"
-                import * as say from 'testmodule';
-
                 async function script() {{
+                    const say = await sandboxImport('testmodule');
                     return JSON.stringify({{
                         sayHello: say.hello(),
                         sayBye: say.bye(),
@@ -36,9 +35,10 @@ namespace NilJsSample.Controllers
 
             var module = new Module("default", script);
 
-            // add multiple resolvers to chain
-            module.ModuleResolversChain.Add(new NamedPackageModuleResolver());
-            module.ModuleResolversChain.Add(new RelativePathModuleResolver());
+            module
+                .Context
+                .DefineVariable("sandboxImport")
+                .Assign(JSValue.Marshal(new Func<string, Promise>(SandboxImportJS)));
 
             try
             {
@@ -64,6 +64,28 @@ namespace NilJsSample.Controllers
                     error = e.Message
                 });
             }
+        }
+
+        private Promise SandboxImportJS(string moduleName)
+        {
+            var container = $@"
+                import * as {moduleName} from '{moduleName}';
+                async function sandboxImport() {{
+                    return {moduleName};
+                }}
+            ";
+
+            var module = new Module("sandboxImport", container);
+
+            module.ModuleResolversChain.Add(new NamedPackageModuleResolver());
+            module.ModuleResolversChain.Add(new RelativePathModuleResolver());
+
+            module.Run();
+
+            return module.Context.GetVariable("sandboxImport")
+                    .As<Function>()
+                    .Call(new Arguments())
+                    .As<Promise>();
         }
     }
 }
